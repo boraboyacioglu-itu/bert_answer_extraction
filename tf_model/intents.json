@@ -1,0 +1,84 @@
+{
+    "intents": [
+        {
+            "tag": "fallback",
+            "patterns": [],
+            "responses": ["Sorry, I didn't understand", "Could you please repeat that?", "Sorry, I couldn't catch that, could you say it again?", "I'm not sure what you mean.", "Unfortunately, I can't assist with that request."]
+        },
+        {
+            "tag": "greeting",
+            "patterns": ["hello", "hi", "good day", "good morning", "good evening", "hey", "what's up", "how are you"],
+            "responses": ["Hello!", "Welcome!", "Hello, how can I assist you?", "Good day, how can I help you?"]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": ["bye", "goodbye", "see you", "see you later", "take care", "farewell", "talk to you later", "have a good day"],
+            "responses": ["See you again soon!", "Take care!", "Goodbye!", "Have a great day!"]
+        },
+        {
+            "tag": "thanks",
+            "patterns": ["Thanks", "Thank you", "You've been very helpful", "Thanks for the help", "Appreciate it", "Thanks a lot"],
+            "responses": ["You're welcome!", "Always happy to help!", "It's my pleasure", "Don't mention it, anytime!"]
+        },
+        {
+            "tag": "about",
+            "patterns": ["Who are you?", "What are you?", "Who is this?", "What does this bot do?", "What is your purpose?"],
+            "responses": ["I'm Mira, your bot assistant", "I'm Mira, an AI-based bot", "I can assist with car rentals and road assistance."]
+        },
+        {
+            "tag": "name",
+            "patterns": ["What's your name?", "What should I call you?", "What is your name?", "Who are you?", "How should I address you?"],
+            "responses": ["You can call me Mira.", "I'm Mira!", "Just call me Mira", "I'm Mira, how can I assist you?"]
+        },
+        {
+            "tag": "help",
+            "patterns": ["Can you help me?", "I need some help", "Can you assist?", "What can you do for me?", "I need support", "Help me please", "Can you support me?", "How can you assist?", "I have a problem, can you help?"],
+            "responses": ["How can I assist you?", "Tell me your problem and I'll assist", "Of course, how can I support you?", "What's the issue, maybe I can help."]
+        },
+        {
+            "tag": "createaccount",
+            "patterns": ["I need to create a new account", "How to open a new account", "I want to create an account", "Can you create an account for me?", "How to open a new account", "What's the process for account creation?", "How can I open an account on the website?"],
+            "responses": ["You can easily create a new account on our website", "Go to our website and follow the instructions to create a new account", "Creating an account is easy, just go to the 'Create Account' section on our site."]
+        },
+        {
+            "tag": "complaint",
+            "patterns": ["I have a complaint", "I want to make a complaint", "I have a service complaint", "I'd like to complain", "I'm not satisfied, I want to complain"],
+            "responses": ["Please let us know your complaint so we can assist you", "Please state your complaint, we will reach out and apologize for any inconvenience", "We will take your complaint into consideration, please tell us the details."]
+        },
+        {
+            "tag": "info",
+            "patterns": ["How can you help me", "What can you do", "Can I get some information", "I need info about something", "Help me", "What services do you offer?", "Can I get information about the services offered?"],
+            "responses": ["I can help you with car rental, buying/selling a car, and transporting your car.", "I can assist you with car rental, road assistance, and other related services."]
+        },
+        {
+            "tag": "payment",
+            "patterns": ["How do I make a payment?", "How can I make my payment?", "Bill payment", "What are the payment methods?", "Can I pay with a credit card?", "What are your payment options?"],
+            "responses": ["You can make payments through our website or via our mobile app", "Payment options include credit card, bank transfer, or online payment systems.", "You can make payments with a credit card, debit card, or online payment methods."]
+        },
+        {
+            "tag": "technical_issue",
+            "patterns": ["I have a technical issue", "The app is not working", "I'm getting an error message", "The system is giving an error", "Can I get technical support?", "The app won't open"],
+            "responses": ["Can you please describe the issue in detail?", "I'll report this to our technical team, it will be resolved shortly.", "Which part of the app are you having trouble with, can you give details?"]
+        },
+        {
+            "tag": "car_rental",
+            "patterns": ["Car rental", "Rent a car", "I want to rent a car", "What's the process for car rental?", "How can I get a rental car?"],
+            "responses": ["All information about our car rental service is available on our website", "Tell me what type of car you'd like to rent, and I can assist you", "Would you like information about our rental conditions and prices?"]
+        },
+        {
+            "tag": "road_assistance",
+            "patterns": ["I'm stranded", "I need road assistance", "My car broke down", "Help on the roadside", "Urgent road assistance"],
+            "responses": ["Our road assistance service will reach you quickly", "Can you provide us your location, we will send help as soon as possible", "What kind of assistance do you need? Please tell me the details"]
+        },
+        {
+            "tag": "booking",
+            "patterns": ["I want to make a booking", "How to book a car?", "Can I book a car now?", "Booking process", "Reserve a car"],
+            "responses": ["You can book a car directly through our website", "To book a car, please provide the details of your requirement", "Booking a car is easy, just let me know what you need and I'll help you out"]
+        },
+        {
+            "tag": "cancelation",
+            "patterns": ["How to cancel a booking?", "I want to cancel my reservation", "Canceling a car rental", "How do I cancel?", "Cancel my booking"],
+            "responses": ["To cancel a booking, please follow the instructions on our website", "You can cancel your reservation from your account dashboard or contact customer service", "Cancelling is easy, just let me know your booking details and I'll assist you"]
+        }
+    ]
+}
