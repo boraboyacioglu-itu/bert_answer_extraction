@@ -5,14 +5,17 @@ import json
 import pickle
 
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
 
 from tensorflow import keras
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D
-from tensorflow.keras.layers import Embedding, Dense, LSTM
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+from keras.optimizers import Adam
+from keras.utils import to_categorical
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Embedding, GlobalAveragePooling1D, LSTM
+from keras.callbacks import EarlyStopping
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
 
 
 glove_id = 100
@@ -60,6 +63,12 @@ word_index = tokenizer.word_index
 sequences = tokenizer.texts_to_sequences(training_sentences)
 padded_sequences = pad_sequences(sequences, padding='post', maxlen=max_len)
 
+training_labels = to_categorical(training_labels, num_classes=num_classes)
+
+# Split data into training and validation sets.
+train_sentences, val_sentences, train_labels, val_labels = train_test_split(
+    padded_sequences, training_labels, test_size=0.1, random_state=42, shuffle=True)
+
 # Load GloVe vectors
 embeddings_index = {}
 with open(glove_data_loc, 'r', encoding='utf-8') as f:
@@ -83,26 +92,34 @@ embedding_layer = Embedding(len(word_index) + 1,
                             input_length=20,
                             trainable=False)
 
-training_labels = to_categorical(training_labels, num_classes=num_classes)
-
 # Build the model.
 model = Sequential()
 
 # Add layers.
 model.add(embedding_layer)
 model.add(GlobalAveragePooling1D())
-model.add(Dense(16, activation='relu'))
-model.add(Dense(16, activation='relu'))
+model.add(Dense(24, activation='relu'))
+model.add(Dropout(0.1))
+model.add(Dense(24, activation='relu'))
+model.add(Dropout(0.1))
 model.add(Dense(num_classes, activation='softmax'))
 
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# Add an Adam optimizer.
+optimizer = Adam(learning_rate=0.001)
+
+model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
+
+# Early stopping.
+early_stop = EarlyStopping(monitor='val_loss', patience=500, restore_best_weights=True)
 
 # Fit the model.
-epochs = 500
-history = model.fit(padded_sequences, training_labels, epochs=epochs)
+epochs = 5000
+history = model.fit(train_sentences, train_labels, epochs=epochs, validation_data=(val_sentences, val_labels), callbacks=[early_stop])
 
 # Data locations.
 data_loc = 'data/'
+
+print(model.summary())
 
 # Save the trained model.
 model.save(data_loc + 'chat_model')

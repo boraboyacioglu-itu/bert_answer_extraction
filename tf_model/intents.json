@@ -3,32 +3,203 @@
         {
             "tag": "fallback",
             "patterns": [],
-            "responses": ["Sorry, I didn't understand", "Could you please repeat that?", "Sorry, I couldn't catch that, could you say it again?", "I'm not sure what you mean.", "Unfortunately, I can't assist with that request."]
+            "responses": [
+                "Sorry, I didn't understand", 
+                "Could you please repeat that?", 
+                "Sorry, I couldn't catch that, could you say it again?", 
+                "I'm not sure what you mean.", 
+                "Unfortunately, I can't assist with that request.",
+                "I'm having trouble understanding you.",
+                "I'm not sure I follow you. Could you clarify?"
+            ]
         },
         {
             "tag": "greeting",
-            "patterns": ["hello", "hi", "good day", "good morning", "good evening", "hey", "what's up", "how are you"],
-            "responses": ["Hello!", "Welcome!", "Hello, how can I assist you?", "Good day, how can I help you?"]
+            "patterns": [
+                "hello", 
+                "hi", 
+                "good day", 
+                "good morning", 
+                "good evening", 
+                "hey", 
+                "what's up", 
+                "how are you",
+                "howdy",
+                "what's going on"
+            ],
+            "responses": [
+                "Hello!", 
+                "Welcome!", 
+                "Hello, how can I assist you?", 
+                "Good day, how can I help you?",
+                "Hey there! How can I assist?",
+                "Hi there, what can I do for you today?"
+            ]
         },
         {
             "tag": "goodbye",
-            "patterns": ["bye", "goodbye", "see you", "see you later", "take care", "farewell", "talk to you later", "have a good day"],
-            "responses": ["See you again soon!", "Take care!", "Goodbye!", "Have a great day!"]
+            "patterns": [
+                "bye", 
+                "goodbye", 
+                "see you", 
+                "see you later", 
+                "take care", 
+                "farewell", 
+                "talk to you later", 
+                "have a good day",
+                "later",
+                "catch you later"
+            ],
+            "responses": [
+                "See you again soon!", 
+                "Take care!", 
+                "Goodbye!", 
+                "Have a great day!",
+                "Until next time!",
+                "Bye! Hope to see you again soon."
+            ]
         },
         {
             "tag": "thanks",
-            "patterns": ["Thanks", "Thank you", "You've been very helpful", "Thanks for the help", "Appreciate it", "Thanks a lot"],
-            "responses": ["You're welcome!", "Always happy to help!", "It's my pleasure", "Don't mention it, anytime!"]
+            "patterns": [
+                "Thanks", 
+                "Thank you", 
+                "You've been very helpful", 
+                "Thanks for the help", 
+                "Appreciate it", 
+                "Thanks a lot",
+                "Much appreciated",
+                "That helps a lot"
+            ],
+            "responses": [
+                "You're welcome!", 
+                "Always happy to help!", 
+                "It's my pleasure", 
+                "Don't mention it, anytime!",
+                "Glad I could assist you!",
+                "Happy to be of service!"
+            ]
         },
         {
             "tag": "about",
-            "patterns": ["Who are you?", "What are you?", "Who is this?", "What does this bot do?", "What is your purpose?"],
-            "responses": ["I'm Mira, your bot assistant", "I'm Mira, an AI-based bot", "I can assist with car rentals and road assistance."]
+            "patterns": [
+                "Who are you?", 
+                "What are you?", 
+                "Who is this?", 
+                "What does this bot do?", 
+                "What is your purpose?",
+                "Tell me about yourself",
+                "What can you do?"
+            ],
+            "responses": [
+                "I'm Mira, your bot assistant", 
+                "I'm Mira, an AI-based bot", 
+                "I can assist with car rentals and road assistance.",
+                "I'm a virtual assistant designed to help with various tasks.",
+                "As Mira, I'm here to make your experience smoother and easier."
+            ]
         },
         {
             "tag": "name",
-            "patterns": ["What's your name?", "What should I call you?", "What is your name?", "Who are you?", "How should I address you?"],
-            "responses": ["You can call me Mira.", "I'm Mira!", "Just call me Mira", "I'm Mira, how can I assist you?"]
+            "patterns": [
+                "What's your name?", 
+                "What should I call you?", 
+                "What is your name?", 
+                "Who are you?", 
+                "How should I address you?",
+                "Do you have a name?",
+                "Your name?"
+            ],
+            "responses": [
+                "You can call me Mira.", 
+                "I'm Mira!", 
+                "Just call me Mira", 
+                "I'm Mira, how can I assist you?",
+                "Mira's the name, assistance is the game!"
+            ]
+        },
+        {
+            "tag": "general_query",
+            "patterns": [
+                "What can you do?", 
+                "How smart are you?", 
+                "Are you intelligent?", 
+                "Capabilities of this bot",
+                "How can you assist?",
+                "Your functions?"
+            ],
+            "responses": [
+                "I'm designed to assist with a variety of tasks, especially related to car rentals and road assistance. My abilities are growing every second!",
+                "I can assist with several queries, particularly in car rentals, road assistance, and general information.",
+                "Think of me as your personal assistant for car-related and other general inquiries."
+            ]
+        },
+        {
+            "tag": "compliment",
+            "patterns": [
+                "You're helpful", 
+                "Good job", 
+                "You're doing great", 
+                "Nice work",
+                "Well done",
+                "That's great"
+            ],
+            "responses": [
+                "Thank you! I'm here to help you as best as I can.", 
+                "I appreciate your kind words. If there's anything else I can do for you, just let me know!",
+                "Thanks! I'm glad I could help you.",
+                "Your compliment means a lot to me. Thank you!"
+            ]
+        },
+        {
+            "tag": "weather",
+            "patterns": ["What's the weather like today?", "Is it going to rain today?", "Do I need an umbrella today?", "Weather forecast for today"],
+            "responses": ["I'm not sure about today's weather, but it's always good to be prepared for a little rain.", "I recommend checking a dedicated weather service for the most accurate forecast."]
+        },
+        {
+            "tag": "joke",
+            "patterns": ["Tell me a joke", "I need to laugh", "Know any good jokes?", "Make me laugh"],
+            "responses": ["Why don't scientists trust atoms? Because they make up everything!", "I told my computer I needed a break, and now it won’t stop sending me Kit-Kats!"]
+        },
+        {
+            "tag": "news",
+            "patterns": ["What's in the news today?", "What's happening in the world?", "Tell me the latest news", "What's going on in the world?"],
+            "responses": ["I'm not sure about the latest news, but I can help you with car rentals and road assistance.", "I recommend checking a dedicated news service for the latest updates."]
+        },
+        {
+            "tag": "music",
+            "patterns": ["Play some music", "I want to listen to music", "Can you play some music?", "Play a song"],
+            "responses": ["I'm not sure about music, but I can help you with car rentals and road assistance.", "I recommend checking a dedicated music service for the latest updates."]
+        },
+        {
+            "tag": "movie",
+            "patterns": ["What's a good movie to watch?", "Can you recommend a movie?", "I want to watch a movie", "What's a good movie?"],
+            "responses": ["I'm not sure about movies, but I can help you with car rentals and road assistance.", "I recommend checking a dedicated movie service for the latest updates."]
+        },
+        {
+            "tag": "book",
+            "patterns": ["What's a good book to read?", "Can you recommend a book?", "I want to read a book", "What's a good book?"],
+            "responses": ["I'm not sure about books, but I can help you with car rentals and road assistance.", "I recommend checking a dedicated book service for the latest updates."]
+        },
+        {
+            "tag": "food",
+            "patterns": ["What's a good restaurant?", "Can you recommend a restaurant?", "I want to eat out", "What's a good restaurant?"],
+            "responses": ["I'm not sure about restaurants, but I can help you with car rentals and road assistance.", "I recommend checking a dedicated restaurant service for the latest updates."]
+        },
+        {
+            "tag": "sports",
+            "patterns": ["What's a good sport to watch?", "Can you recommend a sport?", "I want to watch a sport", "What's a good sport?"],
+            "responses": ["I'm not sure about sports, but I can help you with car rentals and road assistance.", "I recommend checking a dedicated sports service for the latest updates."]
+        },
+        {
+            "tag": "advice",
+            "patterns": ["Any travel tips?", "What should I know about renting a car?", "Tips for road trips", "Advice for long drives"],
+            "responses": ["Always make sure to have a spare tire and emergency kit when going on long drives.", "For car rentals, it's a good idea to review the rental agreement carefully and check the vehicle for any existing damages before you start your journey."]
+        },
+        {
+            "tag": "fun_fact",
+            "patterns": ["Tell me a fun fact", "Any interesting facts?", "Share a fun fact with me", "I'd like to hear a fun fact"],
+            "responses": ["Did you know that the first car radio was invented in 1929?", "Here's a fun fact: The world's fastest street-legal car is the Bugatti Veyron Super Sport, which can reach a speed of 267 mph!"]
         },
         {
             "tag": "help",
@@ -79,6 +250,16 @@
             "tag": "cancelation",
             "patterns": ["How to cancel a booking?", "I want to cancel my reservation", "Canceling a car rental", "How do I cancel?", "Cancel my booking"],
             "responses": ["To cancel a booking, please follow the instructions on our website", "You can cancel your reservation from your account dashboard or contact customer service", "Cancelling is easy, just let me know your booking details and I'll assist you"]
+        },
+        {
+            "tag": "car_features",
+            "patterns": ["What features does the rental car have?", "Does the car have GPS?", "Tell me about the car's features", "Does the rental car have air conditioning?"],
+            "responses": ["Our rental cars come with a variety of features. Please specify the car model for detailed information.", "Features vary by car model. Most of our cars have GPS, air conditioning, and safety features."]
+        },
+        {
+            "tag": "car_safety",
+            "patterns": ["Are rental cars safe?", "Do you offer safe cars?", "Safety measures for rental cars", "How safe are the cars?"],
+            "responses": ["Safety is our top priority. All our rental cars are regularly maintained and checked for safety.", "Our cars are equipped with the latest safety features to ensure a safe and comfortable journey for you."]
         }
     ]
 }
