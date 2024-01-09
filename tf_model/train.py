@@ -1,133 +1,108 @@
 import numpy as np
-import tensorflow as tf
 
-import json
-import pickle
-
-from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 
-from tensorflow import keras
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Embedding, GlobalAveragePooling1D
+from tensorflow.keras.callbacks import EarlyStopping
 
-from keras.optimizers import Adam
-from keras.utils import to_categorical
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Embedding, GlobalAveragePooling1D, LSTM
-from keras.callbacks import EarlyStopping
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
+from utilities.train_utils import load_data, preprocess_data, save_model
+
+# Constants
+EMBEDDING_DIM = 100
+MAX_LEN = 20
+RANDOM_STATE = 6472  # "MIRA" in T9
+
+EPOCHS = 5000
+LEARNING_RATE = 0.001
+
+PATIENCE  = 500
 
 
-glove_id = 100
-glove_data_loc = f'/Users/wndpzr/Downloads/glove.6B/glove.6B.{glove_id}d.txt'
+def build_model(embedding_matrix, num_classes) -> Sequential:
+    """ Build the model.
+    Args:
+        embedding_matrix (np.array): An array containing the GloVe vectors.
+        num_classes (int): The number of different topics.
+    Returns:
+        Sequential: The built model.
+    """
 
-# Open and read the knowledge base.
-with open('intents.json') as f:
-    data = json.load(f)
+    # Create embedding layer
+    embedding_layer = Embedding(len(word_index) + 1,
+                                EMBEDDING_DIM,
+                                weights=[embedding_matrix],
+                                input_length=MAX_LEN,
+                                trainable=False)
 
-# Initialise the arrays.
-training_sentences = []
-training_labels = []
-labels = []
-responses = []
+    # Build the model.
+    model = Sequential()
 
-for intent in data['intents']:
-    for pattern in intent['patterns']:
-        training_sentences.append(pattern)
-        training_labels.append(intent['tag'])
-    responses.append(intent['responses'])
+    # Add layers.
+    model.add(embedding_layer)
+    model.add(GlobalAveragePooling1D())
+    model.add(Dense(24, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(24, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(num_classes, activation='softmax'))
 
-    if intent['tag'] not in labels:
-        labels.append(intent['tag'])
+    # Add an Adam optimizer.
+    optimizer = Adam(learning_rate=LEARNING_RATE)
 
-# Number of different topics.
-num_classes = len(labels)
+    model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
-# Initialise and fit the encoder to the training labels.
-label_encoder = LabelEncoder()
-label_encoder.fit(training_labels)
-training_labels = label_encoder.transform(training_labels)
+    return model
 
-# Define the parameters.
-vocab_size = 10000
-embedding_dim = 100
-max_len = 20
-oov_token = "<OOV>"
 
-# Tokenise the sentences.
-tokenizer = Tokenizer(num_words=vocab_size, oov_token=oov_token)
-tokenizer.fit_on_texts(training_sentences)
-word_index = tokenizer.word_index
+def train_model(model, train_data, val_data) -> tuple:
+    """ Train the model.
+    Args:
+        model (Sequential): The built model.
+        train_data (tuple): A tuple containing the padded sequences and training labels.
+        val_data (tuple): A tuple containing the padded sequences and validation labels.
+    Returns:
+        tuple: A tuple containing the trained model and the history of the training process.
+    """
 
-# Pad the sequences.
-sequences = tokenizer.texts_to_sequences(training_sentences)
-padded_sequences = pad_sequences(sequences, padding='post', maxlen=max_len)
+    # Early stopping.
+    early_stop = EarlyStopping(monitor='val_loss', patience=PATIENCE, restore_best_weights=True)
 
-training_labels = to_categorical(training_labels, num_classes=num_classes)
+    # Fit the model.
+    history = model.fit(*train_data, epochs=EPOCHS, validation_data=val_data, callbacks=[early_stop])
 
-# Split data into training and validation sets.
-train_sentences, val_sentences, train_labels, val_labels = train_test_split(
-    padded_sequences, training_labels, test_size=0.1, random_state=42, shuffle=True)
+    return model, history
 
-# Load GloVe vectors
-embeddings_index = {}
-with open(glove_data_loc, 'r', encoding='utf-8') as f:
-    for line in f:
-        values = line.split()
-        word = values[0]
-        coefs = np.asarray(values[1:], dtype='float32')
-        embeddings_index[word] = coefs
 
-# Prepare embedding matrix
-embedding_matrix = np.zeros((len(word_index) + 1, embedding_dim))
-for word, i in word_index.items():
-    embedding_vector = embeddings_index.get(word)
-    if embedding_vector is not None:
-        embedding_matrix[i] = embedding_vector
+if __name__ == "__main__":
+    training_sentences, training_labels, labels, responses = load_data()
+    padded_sequences, training_labels, tokenizer, label_encoder, word_index = preprocess_data(labels, training_sentences, training_labels)
 
-# Create embedding layer
-embedding_layer = Embedding(len(word_index) + 1,
-                            embedding_dim,
-                            weights=[embedding_matrix],
-                            input_length=20,
-                            trainable=False)
+    # Split data into training and validation sets.
+    train_data, val_data = train_test_split(
+        (padded_sequences, training_labels),
+        test_size=0.1, random_state=RANDOM_STATE, shuffle=True
+    )
 
-# Build the model.
-model = Sequential()
+    # Load GloVe vectors
+    embeddings_index = {}
+    glove_data_loc = f'/Users/wndpzr/Downloads/glove.6B/glove.6B.{EMBEDDING_DIM}d.txt'
+    with open(glove_data_loc, 'r', encoding='utf-8') as f:
+        for line in f:
+            values = line.split()
+            word = values[0]
+            coefs = np.asarray(values[1:], dtype='float32')
+            embeddings_index[word] = coefs
 
-# Add layers.
-model.add(embedding_layer)
-model.add(GlobalAveragePooling1D())
-model.add(Dense(24, activation='relu'))
-model.add(Dropout(0.1))
-model.add(Dense(24, activation='relu'))
-model.add(Dropout(0.1))
-model.add(Dense(num_classes, activation='softmax'))
+    # Prepare embedding matrix
+    embedding_matrix = np.zeros((len(word_index) + 1, EMBEDDING_DIM))
+    for word, i in word_index.items():
+        embedding_vector = embeddings_index.get(word)
+        if embedding_vector is not None:
+            embedding_matrix[i] = embedding_vector
 
-# Add an Adam optimizer.
-optimizer = Adam(learning_rate=0.001)
-
-model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
-
-# Early stopping.
-early_stop = EarlyStopping(monitor='val_loss', patience=500, restore_best_weights=True)
-
-# Fit the model.
-epochs = 5000
-history = model.fit(train_sentences, train_labels, epochs=epochs, validation_data=(val_sentences, val_labels), callbacks=[early_stop])
-
-# Data locations.
-data_loc = 'data/'
-
-print(model.summary())
-
-# Save the trained model.
-model.save(data_loc + 'chat_model')
-
-# Save the fitted tokenizer.
-with open(data_loc + 'tokenizer.pickle', 'wb') as handle:
-    pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-# Save the fitted label encoder.
-with open(data_loc + 'label_encoder.pickle', 'wb') as ecn_file:
-    pickle.dump(label_encoder, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
+    # Build, train and save the model.
+    model = build_model(embedding_matrix, len(labels))
+    trained_model, history = train_model(model, train_data, val_data)
+    save_model(trained_model, tokenizer, label_encoder, 'data/')
