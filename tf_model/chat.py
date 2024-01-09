@@ -88,5 +88,5 @@ def chat():
 
 
 if __name__ == "__main__":
-    print(f"{cg}You can start your conversation with Mira. Type {si}'quit'{s0} to end the session.{s0}")
+    print(f"{cg}You can start your conversation with Mira. Type {si}'quit'{s0}{cg} to end the session.{s0}")
     chat()
